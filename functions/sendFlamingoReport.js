@@ -6,7 +6,7 @@ const streams = require('memory-streams');
 
 
 function processFile(fileContent) {
-  let fileName = path.join(__dirname, Date.now()+'.txt');
+  let fileName = "/tmp/"+ Date.now()+'.txt';
   console.log('before promise');
   return new Promise((resolve)=> {
     console.log('on promise');
@@ -14,7 +14,7 @@ function processFile(fileContent) {
       console.log('inside write');
       if (err) throw err;
       console.log('what??');
-      resolve(fs.createReadStream(filename));
+      resolve(fs.createReadStream(fileName));
     });
   });
 }
