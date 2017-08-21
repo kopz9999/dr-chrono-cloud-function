@@ -8,15 +8,13 @@ const fs = require("fs");
  * @return {String}
  */
 function matrixToCsv(fileMatrix) {
-  let lines = [];
-  fileMatrix.forEach((arr)=> lines.push(arr.join(",")));
-  return lines.join("\n");
+  return fileMatrix.map(arr=> arr.map(word => '"' + word + '"').join(",") ).join("\n");
 }
 
 function processFile(fileMatrix) {
   let fileName = "/tmp/"+ Date.now()+'.csv';
   return new Promise((resolve)=> {
-    fs.writeFile(fileName, matrixToCsv(fileMatrix), function(err){
+    fs.writeFile(fileName, matrixToCsv(fileMatrix), 'utf8', function(err){
       if (err) throw err;
       resolve(fs.createReadStream(fileName));
     });
