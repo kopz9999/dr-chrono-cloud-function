@@ -1,6 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const createToken = require("./createToken");
 const callResource = require("./callResource");
+const sendFlamingoReport = require("./sendFlamingoReport");
 
 const functions = require('firebase-functions');
 
@@ -31,4 +32,8 @@ exports.createToken = functions.https.onRequest((req, res) => {
 
 exports.callResource = functions.https.onRequest((req, res) => {
   validateRequestMethod(req, res, callResource);
+});
+
+exports.sendFlamingoReport = functions.https.onRequest((req, res) => {
+  validateRequestMethod(req, res, sendFlamingoReport);
 });
