@@ -1,7 +1,8 @@
 const API_URL = require("./constants").API_URL;
 const popsicle = require('popsicle');
 const fs = require("fs");
-const admin = require("firebase-admin");
+const oAuthClient = require("./shared").oAuthClient;
+const retrieveOAuthToken = require("./shared").retrieveOAuthToken;
 
 /**
  *
@@ -24,11 +25,11 @@ function processFile(fileMatrix) {
 
 /**
  *
- * @param {String} authToken
+ * @param {ClientOAuth2.Token} token
  * @param {Object} opts
  * @returns {Promise<Response>}
  */
-function uploadFlamingoForm(authToken, opts) {
+function uploadFlamingoForm(token, opts) {
   let body = opts.body,
     fileMatrix = opts.file_matrix,
     formBody;
@@ -41,22 +42,8 @@ function uploadFlamingoForm(authToken, opts) {
       url: `${API_URL}messages`,
       body: popsicle.form(formBody),
       headers: {
-        'Authorization': `Bearer ${authToken}`
+        'Authorization': `Bearer ${token.accessToken}`
       }
-    });
-  });
-}
-
-/**
- * @return {Promise<String>}
- * */
-function retrieveOAuthToken() {
-  let db = admin.database();
-  let ref = db.ref("tokens/default");
-
-  return new Promise((resolve)=> {
-    ref.once('value', function(snapshot) {
-      resolve(snapshot.val().access_token);
     });
   });
 }
@@ -67,8 +54,8 @@ function retrieveOAuthToken() {
  * */
 module.exports = function sendFlamingoReport(req, res) {
   if (req.get('content-type') === 'application/json' && req.method === 'POST') {
-    retrieveOAuthToken()
-      .then((strToken)=> uploadFlamingoForm(strToken, req.body))
+    retrieveOAuthToken(oAuthClient())
+      .then((token)=> uploadFlamingoForm(token, req.body))
       .then((r)=> res.status(r.status || 400).send(r.body));
   } else {
     res.status(200).json({ error: 'Please use Content-Type: application/json and POST method' });

@@ -2,7 +2,7 @@ const AUTH_URL = require("./constants").AUTH_URL;
 const TOKEN_URL = require("./constants").TOKEN_URL;
 const ClientOAuth2 = require("client-oauth2");
 const appendQuery = require('append-query');
-const admin = require("firebase-admin");
+const saveToken = require("./shared").saveToken;
 
 /**
  * @param {Object} opts
@@ -34,17 +34,6 @@ function performOAuth(opts) {
     }
   })
 };
-
-/**
- * @param {ClientOAuth2.Token} token
- * @return {ClientOAuth2.Token}
- * */
-function saveToken(token) {
-  let db = admin.database();
-  let ref = db.ref("tokens/default");
-  ref.set(token.data);
-  return token;
-}
 
 /**
  * @param {Request} req
