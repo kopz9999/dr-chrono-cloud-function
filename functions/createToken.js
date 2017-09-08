@@ -3,7 +3,6 @@ const TOKEN_URL = require("./constants").TOKEN_URL;
 const ClientOAuth2 = require("client-oauth2");
 const appendQuery = require('append-query');
 const admin = require("firebase-admin");
-const serviceAccount = require("./private/serviceAccountKey.json");
 
 /**
  * @param {Object} opts
