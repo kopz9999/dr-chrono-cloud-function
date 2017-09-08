@@ -30,9 +30,11 @@ exports.createToken = functions.https.onRequest((req, res) => {
   validateRequestMethod(req, res, createToken);
 });
 
+/*
 exports.callResource = functions.https.onRequest((req, res) => {
   validateRequestMethod(req, res, callResource);
 });
+ */
 
 exports.sendFlamingoReport = functions.https.onRequest((req, res) => {
   validateRequestMethod(req, res, sendFlamingoReport);
