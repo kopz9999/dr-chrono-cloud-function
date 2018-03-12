@@ -2,6 +2,7 @@
 const createToken = require("./createToken");
 const sendFlamingoReport = require("./sendFlamingoReport");
 const updateToken = require("./updateToken");
+const trackCalendlyEvent = require('./trackCalendlyEvent');
 
 const functions = require('firebase-functions');
 
@@ -36,4 +37,8 @@ exports.sendFlamingoReport = functions.https.onRequest((req, res) => {
 
 exports.updateToken = functions.https.onRequest((req, res) => {
   validateRequestMethod(req, res, updateToken);
+});
+
+exports.trackCalendlyEvent = functions.https.onRequest((req, res) => {
+  validateRequestMethod(req, res, trackCalendlyEvent);
 });
